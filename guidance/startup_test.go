@@ -1,4 +1,4 @@
-package service
+package guidance
 
 import (
 	"fmt"
