@@ -6,5 +6,5 @@ func ExampleObserve() {
 	fmt.Printf("test: Observe()")
 
 	//Output:
-	//fail
+	//test: Observe()
 }

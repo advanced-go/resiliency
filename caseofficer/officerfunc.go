@@ -3,43 +3,31 @@ package caseofficer1
 import (
 	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/messaging"
-	"github.com/advanced-go/guidance/resiliency1"
-	"github.com/advanced-go/intelagents/egress1"
 	"github.com/advanced-go/resiliency/common"
+	"github.com/advanced-go/resiliency/service"
 )
 
 // A nod to Linus Torvalds and plain C
 type caseOfficerFunc struct {
-	startup func(c *caseOfficer, guide *common.Guidance) *core.Status
-	update  func(c *caseOfficer, guide *common.Guidance) *core.Status
+	startup func(c *caseOfficer, guide *common.Guidance, newAgent newServiceAgent) *core.Status
+	update  func(c *caseOfficer, guide *common.Guidance, newAgent newServiceAgent) *core.Status
 }
 
 var (
-	newFieldOperative = func(ingress bool, profile *common.Profile, origin core.Origin, handler messaging.OpsAgent) messaging.Agent {
-		if ingress {
-			return ingress1.NewFieldOperative(origin, profile, handler)
-		}
-		return egress1.NewFieldOperative(origin, profile, handler)
-	}
-
 	officer = func() *caseOfficerFunc {
 		return &caseOfficerFunc{
-			startup: func(c *caseOfficer, guide *common.Guidance) *core.Status {
-				entry, lastId, status := guide.Assignments(c.handler, c.origin)
+			startup: func(c *caseOfficer, guide *common.Guidance, newAgent newServiceAgent) *core.Status {
+				entry, status := guide.Assignments(c.handler, c.origin)
 				if status.OK() {
-					c.lastId = lastId
-					updateExchange(c, entry)
+					updateExchange(c, entry, newAgent)
 				}
-				c.redirectAgent = newRedirectCDC(c.origin, c.lastId.Redirect, c.ingressAgents, c)
-				c.failoverAgent = newEgressCDC(c.origin, c.lastId.Egress, c.egressAgents, c)
 				c.startup()
 				return core.StatusOK()
 			},
-			update: func(c *caseOfficer, guide *common.Guidance) *core.Status {
-				entry, status := guide.NewAssignments(c.handler, c.origin, c.lastId.Entry)
+			update: func(c *caseOfficer, guide *common.Guidance, newAgent newServiceAgent) *core.Status {
+				entry, status := guide.NewAssignments(c.handler, c.origin)
 				if status.OK() {
-					c.lastId.Entry = entry[len(entry)-1].EntryId
-					updateExchange(c, entry)
+					updateExchange(c, entry, newAgent)
 				}
 				return core.StatusOK()
 			},
@@ -47,32 +35,19 @@ var (
 	}()
 )
 
-func updateExchange(c *caseOfficer, entries []resiliency1.HostEntry) {
+func updateExchange(c *caseOfficer, entries []common.HostEntry, newAgent newServiceAgent) {
 	for _, e := range entries {
-		o := core.Origin{
-			Region:     e.Region,
-			Zone:       e.Zone,
-			SubZone:    "",
-			Host:       "",
-			InstanceId: "",
-			Route:      "",
-		}
-		initAgent(c, o, true)
-		initAgent(c, o, false)
+		newAgent(e.Origin, c)
+		newAgent(e.Origin, c)
 	}
 }
 
-func initAgent(c *caseOfficer, origin core.Origin, ingress bool) {
+func initAgent(origin core.Origin, c *caseOfficer) {
 	var agent messaging.Agent
 	var err error
 
-	if ingress {
-		agent = newFieldOperative(ingress, c.profile, origin, c)
-		err = c.ingressAgents.Register(agent)
-	} else {
-		agent = newFieldOperative(ingress, c.profile, origin, c)
-		err = c.egressAgents.Register(agent)
-	}
+	agent = service.NewAgent(origin, c)
+	err = c.serviceAgents.Register(agent)
 	if err != nil {
 		c.handler.Handle(core.NewStatusError(core.StatusInvalidArgument, err))
 	} else {

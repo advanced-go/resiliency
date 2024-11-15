@@ -9,17 +9,7 @@ import (
 )
 
 const (
-	ContentTypeProfile            = "application/profile"
-	ContentTypePercentileSLO      = "application/percentileSLO"
-	ContentTypeRedirectConfig     = "application/redirect-config"
-	ContentTypeEgressConfig       = "application/egress-config"
-	ContentTypeIngressTimeseries1 = "application/ingress-timeseries1"
-
-	ContentTypeEgressTimeseries1 = "application/egress-timeseries1"
-
-	SQLInsert = "insert"
-	SQLUpdate = "update"
-	SQLDelete = "delete"
+	ContentTypeCalendar = "application/calendar"
 )
 
 func ProfileTypeErrorStatus(agentId string, t any) *core.Status {

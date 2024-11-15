@@ -32,9 +32,8 @@ func emissaryAttend(r *service, observe *common.Observation) {
 				r.emissary.Close()
 				return
 			case messaging.DataChangeEvent:
-				//if p := common1.GetProfile(r.handler, r.agentId, msg); p != nil {
-				//	ticker.Start(p.ResiliencyDuration(-1))
-				//}
+				if p := common.GetCalendar(r.handler, r.agentId, msg); p != nil {
+				}
 			default:
 				r.handler.Handle(common.MessageEventErrorStatus(r.agentId, msg))
 			}

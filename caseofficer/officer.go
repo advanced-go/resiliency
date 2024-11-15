@@ -8,15 +8,15 @@ import (
 )
 
 const (
-	CaseOfficerClass = "case-officer"
+	CaseOfficerClass   = "case-officer"
+	assignmentDuration = time.Minute * 30
 )
 
 type caseOfficer struct {
 	running bool
 	agentId string
 	origin  core.Origin
-	//lastId        resiliency1.LastCDCId
-	//profile       *common.Profile
+
 	ticker        *messaging.Ticker
 	ctrlC         chan *messaging.Message
 	handler       messaging.OpsAgent
@@ -38,7 +38,7 @@ func newAgent(origin core.Origin, handler messaging.OpsAgent) *caseOfficer {
 	c := new(caseOfficer)
 	c.agentId = AgentUri(origin)
 	c.origin = origin
-	c.ticker = messaging.NewTicker(common.OffPeakDuration)
+	c.ticker = messaging.NewTicker(assignmentDuration)
 	c.ctrlC = make(chan *messaging.Message, messaging.ChannelSize)
 	c.handler = handler
 	c.serviceAgents = messaging.NewExchange()
@@ -75,7 +75,7 @@ func (c *caseOfficer) Run() {
 		return
 	}
 	c.running = true
-	go emissaryAttend(c, officer)
+	go emissaryAttend(c, officer, common.Guide, initAgent)
 }
 
 // Shutdown - shutdown the agent

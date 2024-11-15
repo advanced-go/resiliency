@@ -1,21 +1,22 @@
 package caseofficer1
 
 import (
+	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/messaging"
 	"github.com/advanced-go/resiliency/common"
 )
 
-func emissaryAttend(c *caseOfficer, fn *caseOfficerFunc) {
-	//processMsg := messaging.NewControlMessage("", "", messaging.ProcessEvent)
-	fn.startup(c, nil)
+type newServiceAgent func(origin core.Origin, c *caseOfficer)
+
+func emissaryAttend(c *caseOfficer, fn *caseOfficerFunc, guide *common.Guidance, newAgent newServiceAgent) {
+	fn.startup(c, guide, newAgent)
 
 	for {
+		// new assignment processing
 		select {
 		case <-c.ticker.C():
 			c.handler.AddActivity(c.agentId, "onTick()")
-			//c.failoverAgent.Message(processMsg)
-			//c.redirectAgent.Message(processMsg)
-			fn.update(c, nil)
+			fn.update(c, guide, newAgent)
 		default:
 		}
 		// control channel processing
@@ -27,7 +28,7 @@ func emissaryAttend(c *caseOfficer, fn *caseOfficerFunc) {
 				c.handler.AddActivity(c.agentId, messaging.ShutdownEvent)
 				return
 			case messaging.DataChangeEvent:
-				if msg.IsContentType(common.ContentTypeProfile) {
+				if msg.IsContentType(common.ContentTypeCalendar) {
 					c.serviceAgents.Broadcast(msg)
 				}
 			default:
