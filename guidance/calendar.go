@@ -3,7 +3,6 @@ package guidance
 import (
 	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/messaging"
-	"github.com/advanced-go/resiliency/common"
 )
 
 type ProcessingCalendar struct {
@@ -16,12 +15,12 @@ func NewProcessingCalendar() *ProcessingCalendar {
 }
 
 func GetCalendar(h core.ErrorHandler, agentId string, msg *messaging.Message) *ProcessingCalendar {
-	if !msg.IsContentType(common.ContentTypeCalendar) {
+	if !msg.IsContentType(ContentTypeCalendar) {
 		return nil
 	}
 	if p, ok := msg.Body.(*ProcessingCalendar); ok {
 		return p
 	}
-	h.Handle(common.ProfileTypeErrorStatus(agentId, msg.Body))
+	h.Handle(CalendarTypeErrorStatus(agentId, msg.Body))
 	return nil
 }
