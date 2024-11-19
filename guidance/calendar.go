@@ -1,7 +1,6 @@
 package guidance
 
 import (
-	"github.com/advanced-go/common/core"
 	"github.com/advanced-go/common/messaging"
 )
 
@@ -14,13 +13,13 @@ func NewProcessingCalendar() *ProcessingCalendar {
 	return c
 }
 
-func GetCalendar(h core.ErrorHandler, agentId string, msg *messaging.Message) *ProcessingCalendar {
+func GetCalendar(h messaging.Notifier, agentId string, msg *messaging.Message) *ProcessingCalendar {
 	if !msg.IsContentType(ContentTypeCalendar) {
 		return nil
 	}
 	if p, ok := msg.Body.(*ProcessingCalendar); ok {
 		return p
 	}
-	h.Handle(CalendarTypeErrorStatus(agentId, msg.Body))
+	h.Notify(CalendarTypeErrorStatus(agentId, msg.Body))
 	return nil
 }
