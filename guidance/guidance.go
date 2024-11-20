@@ -16,7 +16,7 @@ var Guide = func() *Guidance {
 		Assignments: func(h messaging.Notifier, origin core.Origin) ([]HostEntry, *core.Status) {
 			e, status := GetEntry(origin)
 			if !status.OK() {
-				h.Notify(nil, status)
+				h.Notify(status)
 			}
 			return []HostEntry{e}, status
 		},
