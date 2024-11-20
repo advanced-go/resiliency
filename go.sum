@@ -4,5 +4,7 @@ github.com/advanced-go/common v0.0.0-20241119122947-058acf134a42 h1:wwELePpUO9Uw
 github.com/advanced-go/common v0.0.0-20241119122947-058acf134a42/go.mod h1:ZO9q9c1GB9gQOeuWiAk0fT7pH8nfmNarGHi/Qu4LP/Q=
 github.com/advanced-go/common v0.0.0-20241119124720-55426494362a h1:VnTVmVrEtnzF90BJrID3Oek5jOKarV6H7v38zRwO3bc=
 github.com/advanced-go/common v0.0.0-20241119124720-55426494362a/go.mod h1:ZO9q9c1GB9gQOeuWiAk0fT7pH8nfmNarGHi/Qu4LP/Q=
+github.com/advanced-go/common v0.0.0-20241120121855-6d8055728334 h1:j2XqjalMyrNL8oHQimgmn4L2rVIjtqP9Ga28lYDppF8=
+github.com/advanced-go/common v0.0.0-20241120121855-6d8055728334/go.mod h1:ZO9q9c1GB9gQOeuWiAk0fT7pH8nfmNarGHi/Qu4LP/Q=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=
 github.com/google/uuid v1.6.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
