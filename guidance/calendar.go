@@ -20,6 +20,6 @@ func GetCalendar(h messaging.Notifier, agentId string, msg *messaging.Message) *
 	if p, ok := msg.Body.(*ProcessingCalendar); ok {
 		return p
 	}
-	h.Notify(CalendarTypeErrorStatus(agentId, msg.Body))
+	h.Notify(nil, CalendarTypeErrorStatus(agentId, msg.Body))
 	return nil
 }
