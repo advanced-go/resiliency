@@ -14,11 +14,11 @@ type Assignments struct {
 var Assign = func() *Assignments {
 	return &Assignments{
 		All: func(h messaging.Notifier, origin core.Origin) ([]HostEntry, *core.Status) {
-			e, status := GetEntry(origin)
+			entry, status := GetEntry(origin)
 			if !status.OK() {
 				h.Notify(status)
 			}
-			return []HostEntry{e}, status
+			return entry, status
 		},
 		New: func(h messaging.Notifier, origin core.Origin) ([]HostEntry, *core.Status) {
 			return nil, core.StatusNotFound()
