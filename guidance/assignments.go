@@ -14,7 +14,7 @@ type Assignments struct {
 var Assign = func() *Assignments {
 	return &Assignments{
 		All: func(h messaging.Notifier, origin core.Origin) ([]HostEntry, *core.Status) {
-			entry, status := GetEntry(origin)
+			entry, status := GetRegion(origin)
 			if !status.OK() {
 				h.Notify(status)
 			}

@@ -8,13 +8,13 @@ import (
 var (
 	//safeEntry = common.NewSafe()
 	westData = []HostEntry{
-		{Origin: core.Origin{Region: WestRegion, Zone: WestZoneA, SubZone: "", Host: "www.west-host1.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
-		{Origin: core.Origin{Region: WestRegion, Zone: WestZoneB, SubZone: "", Host: "www.west-host2.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
+		{Origin: core.Origin{Region: WestRegion, Zone: WestZoneA, SubZone: "", Host: "west-a-host1.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
+		{Origin: core.Origin{Region: WestRegion, Zone: WestZoneB, SubZone: "", Host: "west-b-host2.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
 	}
 
 	centralData = []HostEntry{
-		{Origin: core.Origin{Region: CentralRegion, Zone: CentralZoneA, SubZone: "", Host: "www.central-host1.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
-		{Origin: core.Origin{Region: CentralRegion, Zone: CentralZoneB, SubZone: "", Host: "www.central-host2.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
+		{Origin: core.Origin{Region: CentralRegion, Zone: CentralZoneA, SubZone: "", Host: "central-a-host1.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
+		{Origin: core.Origin{Region: CentralRegion, Zone: CentralZoneB, SubZone: "", Host: "central-b-host2.com"}, CreatedTS: time.Date(2024, 6, 10, 7, 120, 35, 0, time.UTC)},
 	}
 
 	eastData = []HostEntry{
